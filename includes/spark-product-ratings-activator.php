@@ -33,6 +33,7 @@ class Spark_Product_Ratings_Activator {
 			$plugin_admin::new_taxonomy_type();
 			flush_rewrite_rules();
 		}
+
 	} // activate()
 
 } // class
