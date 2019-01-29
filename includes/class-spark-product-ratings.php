@@ -218,26 +218,6 @@ class Spark_Product_Ratings {
 	 */
 	private function define_widget_hooks() {
 		$this->loader->add_action( 'widgets_init', $this, 'widgets_init' );
-		$this->loader->add_action( 'save_post_product', $this, 'flush_widget_cache' );
-		$this->loader->add_action( 'deleted_post', $this, 'flush_widget_cache' );
-		$this->loader->add_action( 'switch_theme', $this, 'flush_widget_cache' );
-	}
-
-
-	/**
-	 * Flushes widget cache
-	 *
-	 * @since 		1.0.0
-	 * @access 		public
-	 * @param 		int 		$post_id 		The post ID
-	 * @return 		void
-	 */
-	public function flush_widget_cache( $post_id ) {
-		if ( wp_is_post_revision( $post_id ) ) { return; }
-		$post = get_post( $post_id );
-		if ( 'product' == $post->post_type ) {
-			wp_cache_delete( $this->plugin_name, 'widget' );
-		}
 	}
 
 	/**
