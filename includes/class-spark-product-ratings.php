@@ -141,7 +141,13 @@ class Spark_Product_Ratings {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Spark_Product_Ratings_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		
+		$this->loader->add_filter( 'plugin_action_links_' . SPARK_PRODUCT_RATINGS_FILE, $plugin_admin, 'link_settings' );
+		$this->loader->add_action( 'plugin_row_meta', $plugin_admin, 'link_row', 10, 2 );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_sections' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_fields' );
 		//$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		//$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
@@ -229,7 +235,7 @@ class Spark_Product_Ratings {
 	public function flush_widget_cache( $post_id ) {
 		if ( wp_is_post_revision( $post_id ) ) { return; }
 		$post = get_post( $post_id );
-		if ( 'job' == $post->post_type ) {
+		if ( 'product' == $post->post_type ) {
 			wp_cache_delete( $this->plugin_name, 'widget' );
 		}
 	}

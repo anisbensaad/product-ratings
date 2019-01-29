@@ -43,8 +43,127 @@ class Spark_Product_Ratings_Admin{
 		$this->version = $version;
 		add_action('add_meta_boxes_product',array($this,'create_metaboxes'));
 		add_action('save_post_product',array($this,'save_rating'));
+		$this->set_options();
 
 	}
+	/**
+	 * Creates the options page
+	 *
+	 * @since 		1.0.0
+	 * @return 		void
+	 */
+	public function page_options() {
+		include( plugin_dir_path( __FILE__ ) . 'spark-product-ratings-admin-page-settings.php' );
+	} // page_options()
+
+
+	/**
+	 * Sets the class variable $options
+	 */
+	private function set_options() {
+		$this->options = get_option( 'select-default-target' );
+	} // set_options()
+
+	/**
+	 * Registers settings sections with WordPress
+	 */
+	public function register_sections() {
+		// add_settings_section( $id, $title, $callback, $menu_slug );
+		add_settings_section(
+			'default-target',
+			esc_html__( 'Default Target', 'spark-product-ratings' ),
+			null,
+			$this->plugin_name
+		);
+	} // register_sections()
+
+
+	/**
+	 * Registers settings fields with WordPress
+	 */
+	public function register_fields() {
+		add_settings_field(
+			'select-default-target',
+			esc_html__( 'Select Default target', 'spark-product-ratings' ) ,
+			array( $this, 'field_select' ),
+			$this->plugin_name,
+			'default-target',
+			array(
+				'description' 	=> 'This is the default target for the spark product rating widget.',
+				'id' 			=> 'select-default-target',
+				'value' 		=> '',
+			)
+		);
+
+	}
+	/**
+	 * Registers plugin settings
+	 *
+	 * @since 		1.0.0
+	 * @return 		void
+	 */
+	public function register_settings() {
+		// register_setting( $option_group, $option_name, $sanitize_callback );
+		register_setting(
+			'default-target',
+			'select-default-target'
+		);
+	} // register_settings()
+
+
+
+
+	/**
+	 * Creates a select field
+	 *
+	 * Note: label is blank since its created in the Settings API
+	 *
+	 * @param 	array 		$args 			The arguments for the field
+	 * @return 	string 						The HTML field
+	 */
+	public function field_select( $args ) {
+
+		$terms = get_terms( array(
+		    'taxonomy' => 'target_group',
+		    'hide_empty' => false,
+		) );
+		//var_dump($terms);
+	   ?>
+        <select name="select-default-target">
+        	<?php foreach ($terms as $key => $term){ ?>
+          		<option value="<?php echo $term->term_id; ?>" <?php selected(get_option('select-default-target'), $term->term_id); ?>><?php echo $term->name; ?></option>
+        	<?php } ?>
+        </select>
+   <?php
+	} // field_select()
+
+	public static function get_options_list() {
+		$options = array();
+		$options[] = array( 'select-default-target', 'select', '' );
+		return $options;
+	} // get_options_list()
+
+    /**
+	 * Adds a settings page link to a menu
+	 *
+	 * @link 		https://codex.wordpress.org/Administration_Menus
+	 * @since 		1.0.0
+	 * @return 		void
+	 */
+	public function add_menu() {
+		// Top-level page
+		// add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+		// Submenu Page
+		// add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function);
+		add_menu_page(
+			apply_filters( $this->plugin_name . '-settings-page-title', esc_html__( 'Spark product ratings Settings', 'spark-product-ratings' ) ),
+			apply_filters( $this->plugin_name . '-settings-menu-title', esc_html__( 'Spark Settings', 'spark-product-ratings' ) ),
+			'manage_options',
+			$this->plugin_name . '-settings',
+			array( $this, 'page_options' )
+		);
+	} // add_menu()
+
 
 	/**
 	 * Creates a new custom post type
