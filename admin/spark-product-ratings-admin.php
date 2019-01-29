@@ -131,7 +131,7 @@ class Spark_Product_Ratings_Admin{
 	   ?>
         <select name="select-default-target">
         	<?php foreach ($terms as $key => $term){ ?>
-          		<option value="<?php echo $term->term_id; ?>" <?php selected(get_option('select-default-target'), $term->term_id); ?>><?php echo $term->name; ?></option>
+          		<option value="<?php echo $term->term_id; ?>" <?php selected(get_option('select-default-target'), $term->term_id); ?>><?php echo $term->slug; ?></option>
         	<?php } ?>
         </select>
    <?php

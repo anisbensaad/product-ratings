@@ -142,8 +142,8 @@ class Spark_Product_Ratings {
 
 		$plugin_admin = new Spark_Product_Ratings_Admin( $this->get_plugin_name(), $this->get_version() );
 		
-		$this->loader->add_filter( 'plugin_action_links_' . SPARK_PRODUCT_RATINGS_FILE, $plugin_admin, 'link_settings' );
-		$this->loader->add_action( 'plugin_row_meta', $plugin_admin, 'link_row', 10, 2 );
+		//$this->loader->add_filter( 'plugin_action_links_' . SPARK_PRODUCT_RATINGS_FILE, $plugin_admin, 'link_settings' );
+		//$this->loader->add_action( 'plugin_row_meta', $plugin_admin, 'link_row', 10, 2 );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_sections' );
