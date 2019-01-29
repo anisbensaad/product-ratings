@@ -29,7 +29,10 @@ class Spark_Product_Ratings_Activator {
 			$plugin_admin::new_cpt_product();
 			flush_rewrite_rules();
 		}
-		
+		if(!taxonomy_exists('target_group')){
+			$plugin_admin::new_taxonomy_type();
+			flush_rewrite_rules();
+		}
 	} // activate()
 
 } // class
