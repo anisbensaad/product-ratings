@@ -147,4 +147,56 @@ class Spark_Product_Ratings_Admin{
 	  if ( isset( $_POST['rating'] ) )
 		update_post_meta( $post_id, 'rating', esc_attr( $_POST['rating'] ) );
 	}
+
+
+	/**
+	 * Creates a new taxonomy for a custom post type
+	 *
+	 * @since 	1.0.0
+	 * @access 	public
+	 * @uses 	register_taxonomy()
+	 */
+	public static function new_taxonomy_type() {
+		$plural 	= 'Target groups';
+		$single 	= 'Target group';
+		$tax_name 	= 'target_group';
+		$opts['hierarchical']							= TRUE;
+		//$opts['meta_box_cb'] 							= '';
+		$opts['public']									= TRUE;
+		$opts['query_var']								= $tax_name;
+		$opts['show_admin_column'] 						= FALSE;
+		$opts['show_in_nav_menus']						= TRUE;
+		$opts['show_tag_cloud'] 						= TRUE;
+		$opts['show_ui']								= TRUE;
+		$opts['sort'] 									= '';
+		//$opts['update_count_callback'] 					= '';
+		$opts['capabilities']['assign_terms'] 			= 'edit_posts';
+		$opts['capabilities']['delete_terms'] 			= 'manage_categories';
+		$opts['capabilities']['edit_terms'] 			= 'manage_categories';
+		$opts['capabilities']['manage_terms'] 			= 'manage_categories';
+		$opts['labels']['add_new_item'] 				= esc_html__( "Add New {$single}", 'spark-product-ratings' );
+		$opts['labels']['add_or_remove_items'] 			= esc_html__( "Add or remove {$plural}", 'spark-product-ratings' );
+		$opts['labels']['all_items'] 					= esc_html__( $plural, 'spark-product-ratings' );
+		$opts['labels']['choose_from_most_used'] 		= esc_html__( "Choose from most used {$plural}", 'spark-product-ratings' );
+		$opts['labels']['edit_item'] 					= esc_html__( "Edit {$single}" , 'spark-product-ratings');
+		$opts['labels']['menu_name'] 					= esc_html__( $plural, 'spark-product-ratings' );
+		$opts['labels']['name'] 						= esc_html__( $plural, 'spark-product-ratings' );
+		$opts['labels']['new_item_name'] 				= esc_html__( "New {$single} Name", 'spark-product-ratings' );
+		$opts['labels']['not_found'] 					= esc_html__( "No {$plural} Found", 'spark-product-ratings' );
+		$opts['labels']['parent_item'] 					= esc_html__( "Parent {$single}", 'spark-product-ratings' );
+		$opts['labels']['parent_item_colon'] 			= esc_html__( "Parent {$single}:", 'spark-product-ratings' );
+		$opts['labels']['popular_items'] 				= esc_html__( "Popular {$plural}", 'spark-product-ratings' );
+		$opts['labels']['search_items'] 				= esc_html__( "Search {$plural}", 'spark-product-ratings' );
+		$opts['labels']['separate_items_with_commas'] 	= esc_html__( "Separate {$plural} with commas", 'spark-product-ratings' );
+		$opts['labels']['singular_name'] 				= esc_html__( $single, 'spark-product-ratings' );
+		$opts['labels']['update_item'] 					= esc_html__( "Update {$single}", 'spark-product-ratings' );
+		$opts['labels']['view_item'] 					= esc_html__( "View {$single}", 'spark-product-ratings' );
+		$opts['rewrite']['ep_mask']						= EP_NONE;
+		$opts['rewrite']['hierarchical']				= FALSE;
+		$opts['rewrite']['slug']						= esc_html__( strtolower( $tax_name ), 'spark-product-ratings' );
+		$opts['rewrite']['with_front']					= FALSE;
+		$opts = apply_filters( 'spark-product-ratings-taxonomy-options', $opts );
+		register_taxonomy( $tax_name, 'product', $opts );
+	} // new_taxonomy_type()
+
 }
