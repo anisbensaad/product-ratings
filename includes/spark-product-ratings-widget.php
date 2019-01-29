@@ -65,28 +65,16 @@ class Spark_Product_Rating_Widget extends WP_Widget {
 	 * @param 	array	$instance	Saved values from database.
 	 */
 	function widget( $args, $instance ) {
-		$cache = wp_cache_get( $this->plugin_name, 'widget' );
-		if ( ! is_array( $cache ) ) {
-			$cache = array();
-		}
 		if ( ! isset ( $args['widget_id'] ) ) {
 			$args['widget_id'] = $this->plugin_name;
-		}
-		if ( isset ( $cache[ $args['widget_id'] ] ) ) {
-			return print $cache[ $args['widget_id'] ];
 		}
 		extract( $args, EXTR_SKIP );
 		$widget_string = $before_widget;
 		// Manipulate widget's values based on their input fields here
 		ob_start();
-		
 		include( plugin_dir_path( __FILE__ ) . 'partials/spark-product-ratings-widget-front.php' );
-
-		
 		$widget_string .= ob_get_clean();
 		$widget_string .= $after_widget;
-		$cache[ $args['widget_id'] ] = $widget_string;
-		wp_cache_set( $this->plugin_name, $cache, 'widget' );
 		print $widget_string;
 	} // widget()
 	/**

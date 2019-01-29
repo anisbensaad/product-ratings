@@ -5,16 +5,45 @@ if ( ! empty( $instance['title'] ) ) {
 if ( ! empty( $title ) ) {
 	echo $before_title . $title . $after_title;
 }
+if(isset($_GET['target']) && $_GET['target'] !=''){
+	$target = $_GET['target'];
+}
 
-$args = array(
 
-	'post_type' => 'product',
-	'posts_per_page' => 5,
-	'post_status'    => 'publish',
-	'orderby'   => 'meta_value_num',
-	'meta_key'  => 'rating',
-	'order'     => 'DESC'
-);
+if(isset($target) && term_exists( $target, 'target_group' )){
+	$args = array(
+		'tax_query' => array(
+			array(
+				'taxonomy' => 'target_group',
+				'field'    => 'slug',
+				'terms'    => $target,
+			),
+		),
+		'post_type' => 'product',
+		'posts_per_page' => 5,
+		'post_status'    => 'publish',
+		'orderby'   => 'meta_value_num',
+		'meta_key'  => 'rating',
+		'order'     => 'DESC'
+	);
+}else{
+	$default_target = get_option('select-default-target');
+	$args = array(
+		'tax_query' => array(
+			array(
+				'taxonomy' => 'target_group',
+				'field'    => 'term_id',
+				'terms'    => $default_target,
+			),
+		),
+		'post_type' => 'product',
+		'posts_per_page' => 5,
+		'post_status'    => 'publish',
+		'orderby'   => 'meta_value_num',
+		'meta_key'  => 'rating',
+		'order'     => 'DESC'
+	);	
+}
 $query = new WP_Query( $args );
 if ( $query->have_posts() ) :
     while ( $query->have_posts() ) : $query->the_post();
