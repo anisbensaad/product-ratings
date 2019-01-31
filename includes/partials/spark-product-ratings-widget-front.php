@@ -9,7 +9,8 @@ if(isset($_GET['target']) && $_GET['target'] !=''){
 	$target = $_GET['target'];
 }
 
-/*IF there is a ?target='term' in the url and the term exists in our wordpress
+/*
+ * IF there is a ?target='term' in the url and the term exists in our wordpress
  * We show the posts related to this taxonomy term.
  * Otherwise we select the default one.
  */
