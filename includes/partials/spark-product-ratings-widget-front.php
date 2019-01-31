@@ -9,7 +9,10 @@ if(isset($_GET['target']) && $_GET['target'] !=''){
 	$target = $_GET['target'];
 }
 
-
+/*IF there is a ?target='term' in the url and the term exists in our wordpress
+ * We show the posts related to this taxonomy term.
+ * Otherwise we select the default one.
+ */
 if(isset($target) && term_exists( $target, 'target_group' )){
 	$args = array(
 		'tax_query' => array(
@@ -44,6 +47,11 @@ if(isset($target) && term_exists( $target, 'target_group' )){
 		'order'     => 'DESC'
 	);	
 }
+
+/*
+ *Showing the right Product list in our widget 
+ *
+ */
 $query = new WP_Query( $args );
 if ( $query->have_posts() ) :
     while ( $query->have_posts() ) : $query->the_post();
